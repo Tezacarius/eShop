@@ -101,4 +101,31 @@ public class CatalogItemRepository : ICatalogItemRepository
 
         return item.Entity.Id;
     }
+
+    public async Task Remove(int id)
+    {
+        var item = new CatalogItem { Id = id };
+
+        _dbContext.CatalogItems.Remove(item);
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task Update(int id, string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
+    {
+        var item = await _dbContext.CatalogItems
+            .FirstOrDefaultAsync(i => i.Id == id);
+
+        if (item != null)
+        {
+            item.CatalogBrandId = catalogBrandId;
+            item.CatalogTypeId = catalogTypeId;
+            item.Description = description;
+            item.Name = name;
+            item.PictureFileName = pictureFileName;
+            item.Price = price;
+
+            await _dbContext.SaveChangesAsync();
+        }
+    }
 }
