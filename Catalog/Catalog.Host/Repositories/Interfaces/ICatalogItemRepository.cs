@@ -12,4 +12,6 @@ public interface ICatalogItemRepository
     Task<IReadOnlyCollection<CatalogBrand>> GetBrandsAsync();
     Task<IReadOnlyCollection<CatalogType>> GetTypesAsync();
     Task<int?> Add(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName);
+    Task Remove(int id);
+    Task Update(int id, string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName);
 }
