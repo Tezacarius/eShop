@@ -19,36 +19,48 @@ namespace Catalog.Host.Repositories
             _logger = logger;
         }
 
-        public async Task Add(string type)
+        public async Task<int?> Add(string type)
         {
-            var item = await _dbContext.AddAsync(new CatalogType
+            var item = new CatalogType
             {
                 Type = type
-            });
+            };
 
+            var result = await _dbContext.CatalogTypes.AddAsync(item);
             await _dbContext.SaveChangesAsync();
+
+            return result.Entity.Id;
         }
 
-        public async Task Remove(int id)
+        public async Task<int?> Remove(int id)
         {
-            var item = new CatalogType { Id = id };
+            var item = await _dbContext.CatalogTypes.FirstOrDefaultAsync(i => i.Id == id);
+
+            if (item == null)
+            {
+                return null;
+            }
 
             _dbContext.CatalogTypes.Remove(item);
-
             await _dbContext.SaveChangesAsync();
+
+            return item.Id;
         }
 
-        public async Task Update(int id, string type)
+        public async Task<int?> Update(int id, string type)
         {
             var item = await _dbContext.CatalogTypes
             .FirstOrDefaultAsync(i => i.Id == id);
 
-            if (item != null)
+            if (item == null)
             {
-                item.Type = type;
-
-                await _dbContext.SaveChangesAsync();
+                return null;
             }
+
+            item.Type = type;
+            await _dbContext.SaveChangesAsync();
+
+            return item.Id;
         }
     }
 }

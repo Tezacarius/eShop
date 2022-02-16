@@ -17,17 +17,17 @@ namespace Catalog.Host.Services
             _catalogBrandRepository = catalogBrandRepository;
         }
 
-        public Task Add(string brand)
+        public Task<int?> Add(string brand)
         {
             return ExecuteSafeAsync(() => _catalogBrandRepository.Add(brand));
         }
 
-        public Task Remove(int id)
+        public Task<int?> Remove(int id)
         {
             return ExecuteSafeAsync(() => _catalogBrandRepository.Remove(id));
         }
 
-        public Task Update(int id, string brand)
+        public Task<int?> Update(int id, string brand)
         {
             return ExecuteSafeAsync(() => _catalogBrandRepository.Update(id, brand));
         }

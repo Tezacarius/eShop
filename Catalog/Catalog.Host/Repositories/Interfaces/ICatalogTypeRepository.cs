@@ -2,8 +2,8 @@
 {
     public interface ICatalogTypeRepository
     {
-        Task Add(string type);
-        Task Remove(int id);
-        Task Update(int id, string type);
+        Task<int?> Add(string type);
+        Task<int?> Remove(int id);
+        Task<int?> Update(int id, string type);
     }
 }

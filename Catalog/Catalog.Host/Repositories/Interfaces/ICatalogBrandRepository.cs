@@ -2,8 +2,8 @@
 {
     public interface ICatalogBrandRepository
     {
-        Task Add(string brand);
-        Task Remove(int id);
-        Task Update(int id, string brand);
+        Task<int?> Add(string brand);
+        Task<int?> Remove(int id);
+        Task<int?> Update(int id, string brand);
     }
 }

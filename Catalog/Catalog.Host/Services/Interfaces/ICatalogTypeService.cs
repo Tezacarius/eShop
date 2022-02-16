@@ -2,8 +2,8 @@
 {
     public interface ICatalogTypeService
     {
-        Task Add(string type);
-        Task Remove(int id);
-        Task Update(int id, string typep);
+        Task<int?> Add(string type);
+        Task<int?> Remove(int id);
+        Task<int?> Update(int id, string typep);
     }
 }
