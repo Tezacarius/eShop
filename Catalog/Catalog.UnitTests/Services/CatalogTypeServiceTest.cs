@@ -3,29 +3,29 @@ using Catalog.Host.Data.Entities;
 
 namespace Catalog.UnitTests.Services;
 
-public class CatalogBrandServiceTest
+public class CatalogTypeServiceTest
 {
-    private readonly ICatalogBrandService _catalogService;
+    private readonly ICatalogTypeService _catalogService;
 
-    private readonly Mock<ICatalogBrandRepository> _catalogBrandRepository;
+    private readonly Mock<ICatalogTypeRepository> _catalogTypeRepository;
     private readonly Mock<IDbContextWrapper<ApplicationDbContext>> _dbContextWrapper;
     private readonly Mock<ILogger<CatalogService>> _logger;
 
-    private readonly CatalogBrand _testItem = new CatalogBrand()
+    private readonly CatalogType _testItem = new CatalogType()
     {
-        Brand = "Name"
+        Type = "Name"
     };
 
-    public CatalogBrandServiceTest()
+    public CatalogTypeServiceTest()
     {
-        _catalogBrandRepository = new Mock<ICatalogBrandRepository>();
+        _catalogTypeRepository = new Mock<ICatalogTypeRepository>();
         _dbContextWrapper = new Mock<IDbContextWrapper<ApplicationDbContext>>();
         _logger = new Mock<ILogger<CatalogService>>();
 
         var dbContextTransaction = new Mock<IDbContextTransaction>();
         _dbContextWrapper.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransaction.Object);
 
-        _catalogService = new CatalogBrandService(_dbContextWrapper.Object, _logger.Object, _catalogBrandRepository.Object);
+        _catalogService = new CatalogTypeService(_dbContextWrapper.Object, _logger.Object, _catalogTypeRepository.Object);
     }
 
     [Fact]
@@ -34,11 +34,11 @@ public class CatalogBrandServiceTest
         // arrange
         var testResult = 1;
 
-        _catalogBrandRepository.Setup(s => s.Add(
+        _catalogTypeRepository.Setup(s => s.Add(
             It.IsAny<string>())).ReturnsAsync(testResult);
 
         // act
-        var result = await _catalogService.Add(_testItem.Brand);
+        var result = await _catalogService.Add(_testItem.Type);
 
         // assert
         result.Should().Be(testResult);
@@ -50,11 +50,11 @@ public class CatalogBrandServiceTest
         // arrange
         int? testResult = null;
 
-        _catalogBrandRepository.Setup(s => s.Add(
+        _catalogTypeRepository.Setup(s => s.Add(
             It.IsAny<string>())).ReturnsAsync(testResult);
 
         // act
-        var result = await _catalogService.Add(_testItem.Brand);
+        var result = await _catalogService.Add(_testItem.Type);
 
         // assert
         result.Should().Be(testResult);
@@ -67,7 +67,7 @@ public class CatalogBrandServiceTest
         var testId = 1;
         int? testResult = 1;
 
-        _catalogBrandRepository.Setup(s => s.Remove(
+        _catalogTypeRepository.Setup(s => s.Remove(
             It.Is<int>(i => i == testId))).ReturnsAsync(testResult);
 
         // act
@@ -83,7 +83,7 @@ public class CatalogBrandServiceTest
         // arrange
         int testId = 100;
 
-        _catalogBrandRepository.Setup(s => s.Remove(
+        _catalogTypeRepository.Setup(s => s.Remove(
             It.Is<int>(i => i == testId))).Returns((Func<int>)null!);
 
         // act
@@ -99,12 +99,12 @@ public class CatalogBrandServiceTest
         // arrange
         var testResult = 1;
 
-        _catalogBrandRepository.Setup(s => s.Update(
+        _catalogTypeRepository.Setup(s => s.Update(
             It.IsAny<int>(),
             It.IsAny<string>())).ReturnsAsync(testResult);
 
         // act
-        var result = await _catalogService.Update(testResult, _testItem.Brand);
+        var result = await _catalogService.Update(testResult, _testItem.Type);
 
         // assert
         result.Should().Be(testResult);
@@ -117,12 +117,12 @@ public class CatalogBrandServiceTest
         int? testResult = null;
         int testId = 100;
 
-        _catalogBrandRepository.Setup(s => s.Update(
+        _catalogTypeRepository.Setup(s => s.Update(
             It.IsAny<int>(),
             It.IsAny<string>())).ReturnsAsync(testResult);
 
         // act
-        var result = await _catalogService.Update(testId, _testItem.Brand);
+        var result = await _catalogService.Update(testId, _testItem.Type);
 
         // assert
         result.Should().Be(testResult);
