@@ -38,8 +38,7 @@ public class CatalogItemRepository : ICatalogItemRepository
         var item = await _dbContext.CatalogItems
             .Include(i => i.CatalogBrand)
             .Include(i => i.CatalogType)
-            .Where(c => c.Id == id)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(i => i.Id == id);
 
         return item!;
     }
