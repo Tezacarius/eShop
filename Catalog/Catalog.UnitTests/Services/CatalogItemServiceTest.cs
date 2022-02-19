@@ -77,4 +77,84 @@ public class CatalogItemServiceTest
         // assert
         result.Should().Be(testResult);
     }
+
+    [Fact]
+    public async Task Remove_Success()
+    {
+        // arrange
+        var testId = 1;
+        int? testResult = 1;
+
+        _catalogItemRepository.Setup(s => s.Remove(
+            It.Is<int>(i => i == testId))).ReturnsAsync(testResult);
+
+        // act
+        var result = await _catalogService.Remove(testId);
+
+        // assert
+        result.Should().Be(testId);
+    }
+
+    [Fact]
+    public async Task Remove_Failed()
+    {
+        // arrange
+        int testId = 100;
+
+        _catalogItemRepository.Setup(s => s.Remove(
+            It.Is<int>(i => i == testId))).Returns((Func<int>)null!);
+
+        // act
+        var result = await _catalogService.Remove(testId);
+
+        // assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task UpdateAsync_Success()
+    {
+        // arrange
+        var testResult = 1;
+
+        _catalogItemRepository.Setup(s => s.Update(
+            It.IsAny<int>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<decimal>(),
+            It.IsAny<int>(),
+            It.IsAny<int>(),
+            It.IsAny<int>(),
+            It.IsAny<string>())).ReturnsAsync(testResult);
+
+        // act
+        var result = await _catalogService.Update(testResult, _testItem.Name, _testItem.Description, _testItem.Price, _testItem.AvailableStock, _testItem.CatalogBrandId, _testItem.CatalogTypeId, _testItem.PictureFileName);
+
+        // assert
+        result.Should().Be(testResult);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_Failed()
+    {
+        // arrange
+        int? testResult = null;
+        int testId = 100;
+
+        _catalogItemRepository.Setup(s => s.Update(
+            It.IsAny<int>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<decimal>(),
+            It.IsAny<int>(),
+            It.IsAny<int>(),
+            It.IsAny<int>(),
+            It.IsAny<string>())).ReturnsAsync(testResult);
+
+        // act
+        var result = await _catalogService.Update(testId, _testItem.Name, _testItem.Description, _testItem.Price, _testItem.AvailableStock, _testItem.CatalogBrandId, _testItem.CatalogTypeId, _testItem.PictureFileName);
+
+        // assert
+        result.Should().Be(testResult);
+    }
 }
