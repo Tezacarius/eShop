@@ -58,4 +58,49 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
             };
         });
     }
+
+    public async Task<CatalogItemDto> GetItemByIdAsync(int id)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetItemByIdAsync(id);
+            return _mapper.Map<CatalogItemDto>(result);
+        });
+    }
+
+    public async Task<IReadOnlyCollection<CatalogItemDto>> GetItemsByBrandAsync(string brand)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetItemsByBrandAsync(brand);
+            return new List<CatalogItemDto>(result.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList());
+        });
+    }
+
+    public async Task<IReadOnlyCollection<CatalogItemDto>> GetItemsByTypeAsync(string type)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetItemsByTypeAsync(type);
+            return new List<CatalogItemDto>(result.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList());
+        });
+    }
+
+    public async Task<IReadOnlyCollection<CatalogBrandDto>> GetBrandsAsync()
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetBrandsAsync();
+            return new List<CatalogBrandDto>(result.Select(s => _mapper.Map<CatalogBrandDto>(s)).ToList());
+        });
+    }
+
+    public async Task<IReadOnlyCollection<CatalogTypeDto>> GetTypesAsync()
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetTypesAsync();
+            return new List<CatalogTypeDto>(result.Select(s => _mapper.Map<CatalogTypeDto>(s)).ToList());
+        });
+    }
 }
